@@ -8,37 +8,45 @@ import java.util.Arrays;
 
 @Component()
 @Scope("prototype")
-@Box(type="mvhd")
-public class MovieHeaderBox extends FullBox {
+@Box(type="tkhd")
+public class TrackHeaderBox extends FullBox {
 
-    @VariableSize
     @Order(1)
+    @VariableSize
     private Number creationTime;
     @Order(2)
     @VariableSize
     private Number modificationTime;
     @Order(3)
-    private int timeScale;
+    private int trackId;
+
     @Order(4)
-    @VariableSize
-    private Number duration;
+    private int reserved;
     @Order(5)
-    private int rate;
+    @VariableSize
+    private int duration;
+
     @Order(6)
-    private short volume;
-    @Order(7)
-    private final short reserved = 0;
-    @Order(8)
     @ArraySize(2)
-    private final int [] reserved2 = {0, 0};
+    private final int[] reserved2 = {0, 0};
+
+    @Order(7)
+    private short layer = 0;
+
+    @Order(8)
+    private short alternateGroup =0;
+
     @Order(9)
-    @ArraySize(9)
-    private int [] matrix;
+    private short volume;
     @Order(10)
-    @ArraySize(6)
-    private final int [] preDefined = {0,0,0,0,0,0};
+    private short reserved3 = 0;
     @Order(11)
-    private int nextTrackId;
+    @ArraySize(9)
+    private int[] matrix;
+    @Order(12)
+    private int width;
+    @Order(13)
+    private int height;
 
     @VariableSizeProvider
     public int getVariableLength (String parameterName){
@@ -60,18 +68,20 @@ public class MovieHeaderBox extends FullBox {
 
     @Override
     public String toString() {
-        return "MovieHeaderBox{" +
+        return "TrackHeaderBox{" +
                 "creationTime=" + creationTime +
                 ", modificationTime=" + modificationTime +
-                ", timeScale=" + timeScale +
-                ", duration=" + duration +
-                ", rate=" + rate +
-                ", volume=" + volume +
+                ", trackId=" + trackId +
                 ", reserved=" + reserved +
+                ", duration=" + duration +
                 ", reserved2=" + Arrays.toString(reserved2) +
+                ", layer=" + layer +
+                ", alternateGroup=" + alternateGroup +
+                ", volume=" + volume +
+                ", reserved3=" + reserved3 +
                 ", matrix=" + Arrays.toString(matrix) +
-                ", preDefined=" + Arrays.toString(preDefined) +
-                ", nextTrackId=" + nextTrackId +
+                ", width=" + width +
+                ", height=" + height +
                 ", version=" + version +
                 ", flags=" + Arrays.toString(flags) +
                 '}';

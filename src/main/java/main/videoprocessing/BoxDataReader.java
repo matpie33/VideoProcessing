@@ -9,10 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.util.*;
@@ -30,7 +27,7 @@ public class BoxDataReader implements ApplicationContextAware {
         this.fieldsOrderComparator = fieldsOrderComparator;
     }
 
-    public void readAllBoxes(FileInputStream fileInputStream) throws IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException{
+    public void readAllBoxes(FileInputStream fileInputStream) throws IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException {
 
 
         while (fileInputStream.available() > 0){
@@ -62,7 +59,7 @@ public class BoxDataReader implements ApplicationContextAware {
         }
     }
 
-    private void readBox(FileInputStream fileInputStream, String type, int availableBytes) throws IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+    private void readBox(FileInputStream fileInputStream, String type, int availableBytes) throws IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException {
         IBox box = getBoxByType(type);
         if (box == null){
             fileInputStream.skip(availableBytes);
@@ -90,7 +87,7 @@ public class BoxDataReader implements ApplicationContextAware {
         System.out.println(box);
     }
 
-    private int readSimpleParameter(FileInputStream fileInputStream, int availableBytes, IBox box, Field field, Class<?> fieldType) throws IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+    private int readSimpleParameter(FileInputStream fileInputStream, int availableBytes, IBox box, Field field, Class<?> fieldType) throws IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException {
         Integer bytesToRead = getAmountOfBytesToRead(field,box, availableBytes);
         byte [] buffer = new byte[bytesToRead];
         int readedAmount;
@@ -106,13 +103,31 @@ public class BoxDataReader implements ApplicationContextAware {
                 Object valueFromBytes = getValueFromBytes(singleValue, elementClass);
                 Array.set(array, i, valueFromBytes);
             }
-            field.set(box, array);
+            if (Modifier.isFinal(field.getModifiers())){
+                Method equals = Arrays.class.getMethod("equals", array.getClass(), array.getClass());
+                if (!(boolean) equals.invoke(null, array, field.get(box))){
+                    Method toString = Arrays.class.getMethod("toString", array.getClass());
+                    throw new IllegalStateException("Difference on final variable: "+box.getClass() + " field: "+toString.invoke(null,field.get(box)) + " , "+
+                            toString.invoke(null, array));
+                }
+            }
+            else{
+                field.set(box, array);
+            }
 
         }
         else{
             readedAmount = fileInputStream.read(buffer, 0, bytesToRead);
             Object valueFromBytes = getValueFromBytes(buffer, field.getType());
-            field.set(box, valueFromBytes);
+            if (Modifier.isFinal(field.getModifiers())){
+
+                if (!valueFromBytes.equals(field.get(box))){
+                    throw new IllegalStateException("Difference on final variable: "+box.getClass() + " field: "+field.get(box) + " , "+valueFromBytes);
+                }
+            }
+            else{
+                field.set(box, valueFromBytes);
+            }
             availableBytes -= readedAmount;
 
         }
@@ -185,6 +200,9 @@ public class BoxDataReader implements ApplicationContextAware {
             }
         }
         else {
+            if (arraySize != null){
+                throw new IllegalArgumentException("Field is not array, but is annotated with @ArraySize" + field);
+            }
             if (simpleTypeSize !=null){
                 bytesToRead = field.getDeclaredAnnotation(SimpleTypeSize.class).value();
             }
