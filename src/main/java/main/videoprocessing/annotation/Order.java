@@ -1,4 +1,4 @@
-package main.videoprocessing;
+package main.videoprocessing.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

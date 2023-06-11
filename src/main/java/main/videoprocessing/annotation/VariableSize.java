@@ -1,15 +1,11 @@
-package main.videoprocessing;
+package main.videoprocessing.annotation;
 
-
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.TYPE;
-
-@Target(value=TYPE)
+@Target(value= ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Box {
-
-    String type();
+public @interface VariableSize {
 }

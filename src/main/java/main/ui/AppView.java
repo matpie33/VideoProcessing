@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 
 @Component
@@ -20,7 +21,7 @@ public class AppView {
     }
 
     @PostConstruct
-    public void initializeView () throws URISyntaxException, IOException, IllegalAccessException {
+    public void initializeView () throws URISyntaxException, IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
 
         EventQueue.invokeLater(() -> {
             JFrame frame = new JFrame();
@@ -30,7 +31,7 @@ public class AppView {
             videoView.repaint();
             frame.setContentPane(videoView);
         });
-        fileReader.readBoxes();
+        fileReader.readFile();
 
 
     }
