@@ -12,10 +12,10 @@ import java.util.Arrays;
 public class TrackHeaderBox extends FullBox {
 
     @Order(1)
-    @VariableSize
+    @VariableObjectSize
     private Number creationTime;
     @Order(2)
-    @VariableSize
+    @VariableObjectSize
     private Number modificationTime;
     @Order(3)
     private int trackId;
@@ -23,7 +23,7 @@ public class TrackHeaderBox extends FullBox {
     @Order(4)
     private int reserved;
     @Order(5)
-    @VariableSize
+    @VariableObjectSize
     private int duration;
 
     @Order(6)
@@ -48,8 +48,8 @@ public class TrackHeaderBox extends FullBox {
     @Order(13)
     private int height;
 
-    @VariableSizeProvider
-    public int getVariableLength (String parameterName){
+    @VariableObjectSizeProvider
+    public int getObjectSize(String parameterName){
         int length;
 
         switch (parameterName){

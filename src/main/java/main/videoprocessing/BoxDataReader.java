@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.*;
-import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.util.*;
 
@@ -93,7 +92,7 @@ public class BoxDataReader implements ApplicationContextAware {
         int readedAmount;
         field.setAccessible(true);
         if (fieldType.isArray()){
-            int simpleElementSize = getArrayElementSize(field);
+            int simpleElementSize = getArrayElementSize(field, box);
             int arraySize = bytesToRead / simpleElementSize;
             byte [] singleValue = new byte [simpleElementSize];
             Class elementClass = field.getType().getComponentType();
@@ -186,12 +185,20 @@ public class BoxDataReader implements ApplicationContextAware {
         Class<?> fieldType = field.getType();
         SimpleTypeSize simpleTypeSize = field.getDeclaredAnnotation(SimpleTypeSize.class);
         ArraySize arraySize = field.getDeclaredAnnotation(ArraySize.class);
-        Optional<Method> variableLengthProvider = Arrays.stream(field.getDeclaringClass().getDeclaredMethods()).filter(m -> m.getDeclaredAnnotation(VariableSizeProvider.class)!=null).findFirst();
+        Optional<Method> variableObjectSizeProvider = Arrays.stream(field.getDeclaringClass().getDeclaredMethods()).filter(m -> m.getDeclaredAnnotation(VariableObjectSizeProvider.class)!=null).findFirst();
+        Optional<Method> variableArraySizeProvider = Arrays.stream(field.getDeclaringClass().getDeclaredMethods()).filter(m -> m.getDeclaredAnnotation(VariableArraySizeProvider.class)!=null).findFirst();
 
         if (fieldType.isArray()) {
             if (arraySize != null) {
                 bytesToRead = arraySize.value();
-                int arrayElementSize = getArrayElementSize(field);
+                int arrayElementSize = getArrayElementSize(field, box);
+                bytesToRead *= arrayElementSize;
+            }
+            else if (field.getDeclaredAnnotation(VariableArraySize.class)!=null){
+                bytesToRead = (int) variableArraySizeProvider.orElseThrow(()->
+                                new IllegalArgumentException("Variable size provider not provided for class: "+field.getDeclaringClass()))
+                        .invoke(box, field.getName());
+                int arrayElementSize = getArrayElementSize(field, box);
                 bytesToRead *= arrayElementSize;
             }
 
@@ -206,8 +213,8 @@ public class BoxDataReader implements ApplicationContextAware {
             if (simpleTypeSize !=null){
                 bytesToRead = field.getDeclaredAnnotation(SimpleTypeSize.class).value();
             }
-            else if (field.getDeclaredAnnotation(VariableSize.class) != null){
-                bytesToRead = (int) variableLengthProvider.orElseThrow(()->
+            else if (field.getDeclaredAnnotation(VariableObjectSize.class) != null){
+                bytesToRead = (int) variableObjectSizeProvider.orElseThrow(()->
                         new IllegalArgumentException("Variable size provider not provided for class: "+field.getDeclaringClass()))
                         .invoke(box, field.getName());
             }
@@ -219,10 +226,15 @@ public class BoxDataReader implements ApplicationContextAware {
         return bytesToRead;
     }
 
-    private int getArrayElementSize (Field field){
+    private int getArrayElementSize (Field field, IBox box) throws InvocationTargetException, IllegalAccessException {
         SimpleTypeSize simpleTypeSize = field.getDeclaredAnnotation(SimpleTypeSize.class);
+        VariableObjectSize variableObjectSize = field.getDeclaredAnnotation(VariableObjectSize.class);
         if (simpleTypeSize!=null){
             return simpleTypeSize.value();
+        }
+        else if (variableObjectSize != null){
+            return (int)Arrays.stream(field.getDeclaringClass().getDeclaredMethods()).filter(method -> method.getDeclaredAnnotation(VariableObjectSizeProvider.class)!=null)
+                    .findFirst().orElseThrow(()->new IllegalArgumentException("No provider for variable object size: "+field)).invoke(box, field.getName());
         }
         else{
             return getPrimitiveSize(field.getType().getComponentType());

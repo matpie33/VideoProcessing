@@ -11,16 +11,16 @@ import java.util.Arrays;
 @Box(type="mvhd")
 public class MovieHeaderBox extends FullBox {
 
-    @VariableSize
+    @VariableObjectSize
     @Order(1)
     private Number creationTime;
     @Order(2)
-    @VariableSize
+    @VariableObjectSize
     private Number modificationTime;
     @Order(3)
     private int timeScale;
     @Order(4)
-    @VariableSize
+    @VariableObjectSize
     private Number duration;
     @Order(5)
     private int rate;
@@ -40,8 +40,8 @@ public class MovieHeaderBox extends FullBox {
     @Order(11)
     private int nextTrackId;
 
-    @VariableSizeProvider
-    public int getVariableLength (String parameterName){
+    @VariableObjectSizeProvider
+    public int getObjectSize(String parameterName){
         int length;
 
         switch (parameterName){
