@@ -15,4 +15,10 @@ public class TrackBox  implements IBox {
     @Order(1)
     private TrackHeaderBox trackHeaderBox;
 
+    @OptionalField
+    @Order(2)
+    private EditBox editBox;
+    @Order(3)
+    private MediaBox mediaBox;
+
 }

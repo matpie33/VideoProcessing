@@ -58,11 +58,11 @@ public class BoxDataReader implements ApplicationContextAware {
         }
     }
 
-    private void readBox(FileInputStream fileInputStream, String type, int availableBytes) throws IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException {
+    private IBox readBox(FileInputStream fileInputStream, String type, int availableBytes) throws IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException {
         IBox box = getBoxByType(type);
         if (box == null){
             fileInputStream.skip(availableBytes);
-            return;
+            return null;
         }
         SortedSet<Field> sortedFields = new TreeSet<>(fieldsOrderComparator);
         if (box instanceof FullBox){
@@ -75,7 +75,9 @@ public class BoxDataReader implements ApplicationContextAware {
                 type = fieldType.getDeclaredAnnotation(Box.class).type();
                 Result result = readTypeAndSizeOfBox(fileInputStream);
                 availableBytes -= BYTES_AMOUNT_BOX_TYPE_AND_SIZE;
-                readBox(fileInputStream, type, availableBytes);
+                IBox subBox = readBox(fileInputStream, type, result.boxLength - BYTES_AMOUNT_BOX_TYPE_AND_SIZE);
+                field.setAccessible(true);
+                field.set(box, subBox);
             }
             else{
                 availableBytes = readSimpleParameter(fileInputStream, availableBytes, box, field, fieldType);
@@ -83,7 +85,7 @@ public class BoxDataReader implements ApplicationContextAware {
 
 
         }
-        System.out.println(box);
+        return box;
     }
 
     private int readSimpleParameter(FileInputStream fileInputStream, int availableBytes, IBox box, Field field, Class<?> fieldType) throws IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException {
@@ -99,6 +101,7 @@ public class BoxDataReader implements ApplicationContextAware {
             Object array = Array.newInstance(elementClass, arraySize);
             for (int i=0; i< arraySize; i++){
                 readedAmount = fileInputStream.read(singleValue, 0, simpleElementSize);
+                availableBytes -= readedAmount;
                 Object valueFromBytes = getValueFromBytes(singleValue, elementClass);
                 Array.set(array, i, valueFromBytes);
             }
@@ -117,6 +120,7 @@ public class BoxDataReader implements ApplicationContextAware {
         }
         else{
             readedAmount = fileInputStream.read(buffer, 0, bytesToRead);
+            availableBytes -= readedAmount;
             Object valueFromBytes = getValueFromBytes(buffer, field.getType());
             if (Modifier.isFinal(field.getModifiers())){
 
@@ -127,7 +131,7 @@ public class BoxDataReader implements ApplicationContextAware {
             else{
                 field.set(box, valueFromBytes);
             }
-            availableBytes -= readedAmount;
+
 
         }
         return availableBytes;
