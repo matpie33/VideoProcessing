@@ -8,16 +8,12 @@ import org.springframework.stereotype.Component;
 
 @Component()
 @Scope("prototype")
-@Box(type="mdia")
-public class MediaBox implements IBox {
+@Box(type="url ")
+public class DataEntryUrlBox extends FullBox {
     @Order(1)
-    private MediaHeaderBox mediaHeaderBox;
+    private String location;
+    
 
-    @Order(2)
-    private HandlerBox handlerBox;
-
-    @Order(3)
-    private MediaInformationBox mediaInformationBox;
 
 
 }

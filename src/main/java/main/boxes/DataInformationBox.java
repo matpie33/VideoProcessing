@@ -8,16 +8,11 @@ import org.springframework.stereotype.Component;
 
 @Component()
 @Scope("prototype")
-@Box(type="mdia")
-public class MediaBox implements IBox {
+@Box(type="dinf")
+public class DataInformationBox implements IBox {
     @Order(1)
-    private MediaHeaderBox mediaHeaderBox;
+    private DataReferenceBox dataReferenceBox;
 
-    @Order(2)
-    private HandlerBox handlerBox;
-
-    @Order(3)
-    private MediaInformationBox mediaInformationBox;
 
 
 }
