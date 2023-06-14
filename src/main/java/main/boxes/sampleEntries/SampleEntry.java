@@ -1,4 +1,4 @@
-package main.boxes;
+package main.boxes.sampleEntries;
 
 import main.videoprocessing.IBox;
 import main.videoprocessing.annotation.ArraySize;

@@ -1,6 +1,8 @@
 package main.videoprocessing;
 
 import main.boxes.FullBox;
+import main.boxes.sampleEntries.SampleEntry;
+import main.boxes.sampleEntries.VisualSampleEntry;
 import main.videoprocessing.annotation.*;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -66,15 +68,17 @@ public class BoxDataReader implements ApplicationContextAware {
             return null;
         }
         SortedSet<Field> sortedFields = new TreeSet<>(fieldsOrderComparator);
-        if (box instanceof FullBox){
-            Collections.addAll(sortedFields, FullBox.class.getDeclaredFields());
+        Class<?> superclass = box.getClass().getSuperclass();
+        while (!superclass.equals(Object.class)){
+            Collections.addAll(sortedFields, superclass.getDeclaredFields());
+            superclass = superclass.getSuperclass();
         }
         sortedFields.addAll(Arrays.asList(box.getClass().getDeclaredFields()));
         for (Field field : sortedFields) {
             Class<?> fieldType = field.getType();
             if (fieldType.isArray() && IBox.class.isAssignableFrom(fieldType.getComponentType()) && field.getDeclaredAnnotation(VariableArraySize.class)!=null){
                 int arraySize = getVariableArraySize(box, field);
-                Class elementClass = field.getType().getComponentType();
+                Class<?> elementClass = field.getType().getComponentType();
                 Object array = Array.newInstance(elementClass, arraySize);
                 for (int i=0; i<arraySize; i++){
                     Result result = readTypeAndSizeOfBox(fileInputStream);

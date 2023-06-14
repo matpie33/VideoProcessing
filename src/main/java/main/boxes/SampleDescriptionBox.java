@@ -1,6 +1,6 @@
 package main.boxes;
 
-import main.videoprocessing.IBox;
+import main.boxes.sampleEntries.SampleEntry;
 import main.videoprocessing.annotation.Box;
 import main.videoprocessing.annotation.Order;
 import main.videoprocessing.annotation.VariableArraySize;
