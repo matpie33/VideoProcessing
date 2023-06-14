@@ -32,9 +32,9 @@ public class BoxDataReader implements ApplicationContextAware {
         while (fileInputStream.available() > 0){
             int availableBytes = fileInputStream.available();
             Result result = readTypeAndSizeOfBox(fileInputStream);
-            System.out.println("box : "+ result.boxType + " len "+ result.boxLength);
 
-            readBox(fileInputStream, result.boxType, result.boxLength - BYTES_AMOUNT_BOX_TYPE_AND_SIZE);
+            IBox box = readBox(fileInputStream, result.boxType, result.boxLength - BYTES_AMOUNT_BOX_TYPE_AND_SIZE);
+            System.out.println(box);
         }
     }
 
@@ -85,7 +85,6 @@ public class BoxDataReader implements ApplicationContextAware {
             }
             else if (fieldType.isArray() && field.getDeclaredAnnotation(VariableArraySize.class)!=null){
                 handleVariableSizeArray(fileInputStream, availableBytes, box, field, fieldType, box);
-                System.out.println();
             }
             else if (IBox.class.isAssignableFrom(fieldType)){
                 type = fieldType.getDeclaredAnnotation(Box.class).type();
@@ -101,7 +100,6 @@ public class BoxDataReader implements ApplicationContextAware {
 
 
         }
-        System.out.println(box);
         return box;
     }
 

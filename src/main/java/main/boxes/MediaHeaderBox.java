@@ -48,17 +48,4 @@ public class MediaHeaderBox extends FullBox {
         return length;
     }
 
-    @Override
-    public String toString() {
-        return "MediaHeaderBox{" +
-                "creationTime=" + creationTime +
-                ", modificationTime=" + modificationTime +
-                ", timescale=" + timescale +
-                ", duration=" + duration +
-                ", languageWithPadding=" + languageWithPadding +
-                ", predefined=" + predefined +
-                ", version=" + version +
-                ", flags=" + Arrays.toString(flags) +
-                '}';
-    }
 }

@@ -19,17 +19,7 @@ public class HandlerBox extends FullBox {
     @ArraySize(3)
     private final int[] reserved = {0, 0, 0};
     @Order(4)
+    @Text
     private byte[] name;
 
-    @Override
-    public String toString() {
-        return "HandlerBox{" +
-                "predefined=" + predefined +
-                ", handlerType='" + handlerType + '\'' +
-                ", reserved=" + Arrays.toString(reserved) +
-                ", name='" + new String(name) + '\'' +
-                ", version=" + version +
-                ", flags=" + Arrays.toString(flags) +
-                '}';
-    }
 }

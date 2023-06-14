@@ -61,16 +61,4 @@ public class EditListBox extends FullBox {
 
     }
 
-    @Override
-    public String toString() {
-        return "EditListBox{" +
-                "entryCount=" + entryCount +
-                ", segmentDurations=" + Arrays.toString(segmentDurations) +
-                ", mediaTimes=" + Arrays.toString(mediaTimes) +
-                ", mediaRateInteger=" + Arrays.toString(mediaRateInteger) +
-                ", mediaRateFraction=" + Arrays.toString(mediaRateFraction) +
-                ", version=" + version +
-                ", flags=" + Arrays.toString(flags) +
-                '}';
-    }
 }

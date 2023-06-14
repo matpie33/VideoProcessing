@@ -10,11 +10,9 @@ import java.util.Arrays;
 @Component()
 @Scope("prototype")
 @Box(type="trak")
-public class TrackBox  implements IBox {
-
+public class TrackBox extends BasicBox {
     @Order(1)
     private TrackHeaderBox trackHeaderBox;
-
     @OptionalField
     @Order(2)
     private EditBox editBox;

@@ -1,6 +1,8 @@
 package main.boxes.codec.avc;
 
+import main.boxes.BasicBox;
 import main.boxes.EditListBox;
+import main.boxes.Printable;
 import main.videoprocessing.IBox;
 import main.videoprocessing.annotation.*;
 import org.springframework.context.annotation.Scope;
@@ -11,7 +13,7 @@ import java.util.Arrays;
 @Component()
 @Scope("prototype")
 @Box(type="avcC")
-public class AvcConfigurationBox implements IBox {
+public class AvcConfigurationBox extends BasicBox {
     @Order(1)
     private byte configurationVersion = 1;
     @Order(2)
@@ -62,7 +64,7 @@ public class AvcConfigurationBox implements IBox {
         }
     }
 
-    private static class ChromaParameters {
+    private static class ChromaParameters extends Printable{
         @Order(1)
         private byte chromaFormatWithReserved;
 
@@ -83,7 +85,7 @@ public class AvcConfigurationBox implements IBox {
             return numOfSequenceParameterSetExt;
         }
 
-        private static class SequenceParametersExt {
+        private static class SequenceParametersExt extends Printable{
             @Order(1)
             private short sequenceParameterSetExtLength;
 
@@ -101,29 +103,12 @@ public class AvcConfigurationBox implements IBox {
                 }
             }
 
-            @Override
-            public String toString() {
-                return "SequenceParametersExt{" +
-                        "sequenceParameterSetExtLength=" + sequenceParameterSetExtLength +
-                        ", sequenceParameterSetExtNALUnit=" + Arrays.toString(sequenceParameterSetExtNALUnit) +
-                        '}';
-            }
         }
 
-        @Override
-        public String toString() {
-            return "ChromaParameters{" +
-                    "chromaFormatWithReserved=" + chromaFormatWithReserved +
-                    ", bitDepthLumaMinus8=" + bitDepthLumaMinus8 +
-                    ", bitDepthChromaMinus8=" + bitDepthChromaMinus8 +
-                    ", numOfSequenceParameterSetExt=" + numOfSequenceParameterSetExt +
-                    ", sequenceParametersExt=" + Arrays.toString(sequenceParametersExt) +
-                    '}';
-        }
     }
 
 
-    private static class SequenceParameter {
+    private static class SequenceParameter extends Printable{
         @Order(1)
         private short sequenceParameterSetLength;
         @VariableArraySize
@@ -140,16 +125,9 @@ public class AvcConfigurationBox implements IBox {
             }
         }
 
-        @Override
-        public String toString() {
-            return "SequenceParameter{" +
-                    "sequenceParameterSetLength=" + sequenceParameterSetLength +
-                    ", sequenceParameterSetNALUnit=" + Arrays.toString(sequenceParameterSetNALUnit) +
-                    '}';
-        }
     }
 
-    private static class PictureParameter {
+    private static class PictureParameter extends Printable {
         @Order(1)
         private short pictureParameterSetLength;
         @VariableArraySize
@@ -166,28 +144,6 @@ public class AvcConfigurationBox implements IBox {
             }
         }
 
-        @Override
-        public String toString() {
-            return "PictureParameter{" +
-                    "pictureParameterSetLength=" + pictureParameterSetLength +
-                    ", pictureParameterSetNALUnit=" + Arrays.toString(pictureParameterSetNALUnit) +
-                    '}';
-        }
     }
 
-    @Override
-    public String toString() {
-        return "AvcConfigurationBox{" +
-                "configurationVersion=" + configurationVersion +
-                ", avcProfileIndication=" + avcProfileIndication +
-                ", profileCompatibility=" + profileCompatibility +
-                ", avcLevelIndication=" + avcLevelIndication +
-                ", reservedAndLengthMinusOne=" + reservedAndLengthMinusOne +
-                ", reservedAndNumOfSequenceParameterSets=" + reservedAndNumOfSequenceParameterSets +
-                ", sequenceParameters=" + Arrays.toString(sequenceParameters) +
-                ", numOfPictureParameterSets=" + numOfPictureParameterSets +
-                ", pictureParameters=" + Arrays.toString(pictureParameters) +
-                ", chromaParameters=" + chromaParameters +
-                '}';
-    }
 }

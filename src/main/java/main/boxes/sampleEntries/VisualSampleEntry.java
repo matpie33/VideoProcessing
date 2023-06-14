@@ -51,21 +51,4 @@ public abstract class VisualSampleEntry extends SampleEntry {
     private final short predefined3= -1;
 
 
-    @Override
-    public String toString() {
-        return "VisualSampleEntry{" +
-                "predefined=" + predefined +
-                ", reserved=" + reserved +
-                ", predefined2=" + Arrays.toString(predefined2) +
-                ", width=" + width +
-                ", height=" + height +
-                ", horizontalResolution=" + Integer.toHexString(horizontalResolution) +
-                ", verticalResolution=" + Integer.toHexString(verticalResolution) +
-                ", reserved2=" + reserved2 +
-                ", compressorName='" + compressorName + '\'' +
-                ", frameCount='" + frameCount + '\'' +
-                ", depth=" + depth +
-                ", predefined3=" + predefined3 +
-                '}';
-    }
 }

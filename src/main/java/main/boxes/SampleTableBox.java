@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component()
 @Scope("prototype")
 @Box(type="stbl")
-public class SampleTableBox implements IBox {
+public class SampleTableBox extends BasicBox{
     @Order(1)
     private SampleDescriptionBox sampleDescriptionBox;
 }

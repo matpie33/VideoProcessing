@@ -12,7 +12,7 @@ import java.util.Arrays;
 @Component()
 @Scope("prototype")
 @Box(type="ftyp")
-public class FileTypeBox implements IBox {
+public class FileTypeBox extends BasicBox {
     @Order(1)
     @SimpleTypeSize(4)
     private String majorBrand;
@@ -22,12 +22,4 @@ public class FileTypeBox implements IBox {
     @SimpleTypeSize(4)
     private String [] compatibleBrands;
 
-    @Override
-    public String toString() {
-        return "FileTypeBox{" +
-                "majorBrand='" + majorBrand + '\'' +
-                ", minorVersion=" + minorVersion +
-                ", compatibleBrands=" + Arrays.toString(compatibleBrands) +
-                '}';
-    }
 }

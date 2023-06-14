@@ -58,22 +58,4 @@ public class MovieHeaderBox extends FullBox {
 
     }
 
-    @Override
-    public String toString() {
-        return "MovieHeaderBox{" +
-                "creationTime=" + creationTime +
-                ", modificationTime=" + modificationTime +
-                ", timeScale=" + timeScale +
-                ", duration=" + duration +
-                ", rate=" + rate +
-                ", volume=" + volume +
-                ", reserved=" + reserved +
-                ", reserved2=" + Arrays.toString(reserved2) +
-                ", matrix=" + Arrays.toString(matrix) +
-                ", preDefined=" + Arrays.toString(preDefined) +
-                ", nextTrackId=" + nextTrackId +
-                ", version=" + version +
-                ", flags=" + Arrays.toString(flags) +
-                '}';
-    }
 }

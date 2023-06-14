@@ -17,13 +17,4 @@ public class VideoMediaHeaderBox extends FullBox {
     @ArraySize(3)
     private short[] opColor = {0, 0, 0};
 
-    @Override
-    public String toString() {
-        return "VideoMediaHeaderBox{" +
-                "graphicsMode=" + graphicsMode +
-                ", opColor=" + Arrays.toString(opColor) +
-                ", version=" + version +
-                ", flags=" + Arrays.toString(flags) +
-                '}';
-    }
 }

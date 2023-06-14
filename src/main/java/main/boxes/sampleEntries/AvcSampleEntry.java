@@ -16,8 +16,4 @@ public class AvcSampleEntry extends VisualSampleEntry {
     @Order(1)
     private AvcConfigurationBox avcConfigurationBox;
 
-    @Override
-    public String toString() {
-        return getClass()+": "+avcConfigurationBox;
-    }
 }

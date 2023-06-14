@@ -66,24 +66,4 @@ public class TrackHeaderBox extends FullBox {
 
     }
 
-    @Override
-    public String toString() {
-        return "TrackHeaderBox{" +
-                "creationTime=" + creationTime +
-                ", modificationTime=" + modificationTime +
-                ", trackId=" + trackId +
-                ", reserved=" + reserved +
-                ", duration=" + duration +
-                ", reserved2=" + Arrays.toString(reserved2) +
-                ", layer=" + layer +
-                ", alternateGroup=" + alternateGroup +
-                ", volume=" + volume +
-                ", reserved3=" + reserved3 +
-                ", matrix=" + Arrays.toString(matrix) +
-                ", width=" + width +
-                ", height=" + height +
-                ", version=" + version +
-                ", flags=" + Arrays.toString(flags) +
-                '}';
-    }
 }

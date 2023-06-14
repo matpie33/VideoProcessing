@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component()
 @Scope("prototype")
 @Box(type="minf")
-public class MediaInformationBox implements IBox {
+public class MediaInformationBox extends BasicBox {
     @Order(1)
     private VideoMediaHeaderBox videoMediaHeaderBox;
 

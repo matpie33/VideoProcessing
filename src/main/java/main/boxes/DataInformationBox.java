@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component()
 @Scope("prototype")
 @Box(type="dinf")
-public class DataInformationBox implements IBox {
+public class DataInformationBox extends BasicBox {
     @Order(1)
     private DataReferenceBox dataReferenceBox;
 
