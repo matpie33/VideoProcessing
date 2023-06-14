@@ -1,9 +1,7 @@
 package main.boxes.codec.avc;
 
 import main.boxes.BasicBox;
-import main.boxes.EditListBox;
 import main.boxes.Printable;
-import main.videoprocessing.IBox;
 import main.videoprocessing.annotation.*;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

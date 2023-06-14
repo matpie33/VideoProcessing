@@ -1,9 +1,7 @@
 package main.boxes;
 
-import main.videoprocessing.IBox;
 import main.videoprocessing.annotation.Text;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;

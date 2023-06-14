@@ -1,5 +1,6 @@
 package main.videoprocessing;
 
+import main.boxes.BasicBox;
 import main.videoprocessing.annotation.*;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -33,7 +34,7 @@ public class BoxDataReader implements ApplicationContextAware {
             int availableBytes = fileInputStream.available();
             Result result = readTypeAndSizeOfBox(fileInputStream);
 
-            IBox box = readBox(fileInputStream, result.boxType, result.boxLength - BYTES_AMOUNT_BOX_TYPE_AND_SIZE);
+            BasicBox box = readBox(fileInputStream, result.boxType, result.boxLength - BYTES_AMOUNT_BOX_TYPE_AND_SIZE);
             System.out.println(box);
         }
     }
@@ -58,8 +59,8 @@ public class BoxDataReader implements ApplicationContextAware {
         }
     }
 
-    private IBox readBox(FileInputStream fileInputStream, String type, int availableBytes) throws IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, InstantiationException {
-        IBox box = getBoxByType(type);
+    private BasicBox readBox(FileInputStream fileInputStream, String type, int availableBytes) throws IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, InstantiationException {
+        BasicBox box = getBoxByType(type);
         if (box == null){
             fileInputStream.skip(availableBytes);
             return null;
@@ -86,11 +87,11 @@ public class BoxDataReader implements ApplicationContextAware {
             else if (fieldType.isArray() && field.getDeclaredAnnotation(VariableArraySize.class)!=null){
                 handleVariableSizeArray(fileInputStream, availableBytes, box, field, fieldType, box);
             }
-            else if (IBox.class.isAssignableFrom(fieldType)){
+            else if (BasicBox.class.isAssignableFrom(fieldType)){
                 type = fieldType.getDeclaredAnnotation(Box.class).type();
                 Result result = readTypeAndSizeOfBox(fileInputStream);
                 availableBytes -= BYTES_AMOUNT_BOX_TYPE_AND_SIZE;
-                IBox subBox = readBox(fileInputStream, type, result.boxLength - BYTES_AMOUNT_BOX_TYPE_AND_SIZE);
+                BasicBox subBox = readBox(fileInputStream, type, result.boxLength - BYTES_AMOUNT_BOX_TYPE_AND_SIZE);
                 field.setAccessible(true);
                 field.set(box, subBox);
             }
@@ -103,14 +104,14 @@ public class BoxDataReader implements ApplicationContextAware {
         return box;
     }
 
-    private void handleVariableSizeArray(FileInputStream fileInputStream, int availableBytes, IBox box, Field field, Class<?> fieldType, Object objectToSet) throws IllegalAccessException, InvocationTargetException, IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException {
+    private void handleVariableSizeArray(FileInputStream fileInputStream, int availableBytes, BasicBox box, Field field, Class<?> fieldType, Object objectToSet) throws IllegalAccessException, InvocationTargetException, IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException {
         int arraySize = getVariableArraySize(field, objectToSet);
         Class<?> elementClass = field.getType().getComponentType();
         Object array = Array.newInstance(elementClass, arraySize);
         for (int i=0; i<arraySize; i++){
-            if (IBox.class.isAssignableFrom(fieldType.getComponentType())){
+            if (BasicBox.class.isAssignableFrom(fieldType.getComponentType())){
                 Result result = readTypeAndSizeOfBox(fileInputStream);
-                IBox subBox = readBox(fileInputStream, result.boxType, result.boxLength - BYTES_AMOUNT_BOX_TYPE_AND_SIZE);
+                BasicBox subBox = readBox(fileInputStream, result.boxType, result.boxLength - BYTES_AMOUNT_BOX_TYPE_AND_SIZE);
                 Array.set(array, i, subBox);
             }
             else if (field.getDeclaredAnnotation(VariableObjectSize.class)!=null){
@@ -136,7 +137,7 @@ public class BoxDataReader implements ApplicationContextAware {
         field.set(objectToSet, array);
     }
 
-    private Object readFieldsOfClass(FileInputStream fileInputStream, int availableBytes, IBox box, Field field) throws IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, InstantiationException {
+    private Object readFieldsOfClass(FileInputStream fileInputStream, int availableBytes, BasicBox box, Field field) throws IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, InstantiationException {
         SortedSet<Field> subFields = new TreeSet<>(fieldsOrderComparator);
         Class<?> fieldType = field.getType();
         Constructor<?> constructor = (fieldType.isArray()? fieldType.getComponentType():fieldType).getDeclaredConstructor();
@@ -162,7 +163,7 @@ public class BoxDataReader implements ApplicationContextAware {
         return (int)m.invoke(objectToSet, field.getName());
     }
 
-    private int readSimpleParameter(FileInputStream fileInputStream, int availableBytes, IBox box, Field field, Class<?> fieldType, Object objectWithField) throws IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException {
+    private int readSimpleParameter(FileInputStream fileInputStream, int availableBytes, BasicBox box, Field field, Class<?> fieldType, Object objectWithField) throws IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException {
         Integer bytesToRead = getAmountOfBytesToRead(field,box, availableBytes, objectWithField);
         byte [] buffer = new byte[bytesToRead];
         int readedAmount;
@@ -258,7 +259,7 @@ public class BoxDataReader implements ApplicationContextAware {
         return newValue;
     }
 
-    private Integer getAmountOfBytesToRead(Field field, IBox box, int availableBytes, Object objectWithField) throws InvocationTargetException, IllegalAccessException {
+    private Integer getAmountOfBytesToRead(Field field, BasicBox box, int availableBytes, Object objectWithField) throws InvocationTargetException, IllegalAccessException {
         int bytesToRead;
         Class<?> fieldType = field.getType();
         SimpleTypeSize simpleTypeSize = field.getDeclaredAnnotation(SimpleTypeSize.class);
@@ -313,7 +314,7 @@ public class BoxDataReader implements ApplicationContextAware {
         return Arrays.stream(field.getDeclaringClass().getDeclaredMethods()).filter(m -> m.getDeclaredAnnotation(annotationClass) != null).findFirst();
     }
 
-    private int getArrayElementSize (Field field, IBox box) throws InvocationTargetException, IllegalAccessException {
+    private int getArrayElementSize (Field field, BasicBox box) throws InvocationTargetException, IllegalAccessException {
         SimpleTypeSize simpleTypeSize = field.getDeclaredAnnotation(SimpleTypeSize.class);
         VariableObjectSize variableObjectSize = field.getDeclaredAnnotation(VariableObjectSize.class);
         if (simpleTypeSize!=null){
@@ -350,10 +351,10 @@ public class BoxDataReader implements ApplicationContextAware {
         return size;
     }
 
-    private IBox getBoxByType(String type) {
-        Map<String, IBox> beansOfType = applicationContext.getBeansOfType(IBox.class);
-        IBox foundBox = null;
-        for (IBox box : beansOfType.values()) {
+    private BasicBox getBoxByType(String type) {
+        Map<String, BasicBox> beansOfType = applicationContext.getBeansOfType(BasicBox.class);
+        BasicBox foundBox = null;
+        for (BasicBox box : beansOfType.values()) {
             if (box.getClass().getDeclaredAnnotation(Box.class).type().equals(type)){
                 foundBox = box;
                 break;

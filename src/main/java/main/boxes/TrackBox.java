@@ -1,11 +1,8 @@
 package main.boxes;
 
-import main.videoprocessing.IBox;
 import main.videoprocessing.annotation.*;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
 
 @Component()
 @Scope("prototype")
