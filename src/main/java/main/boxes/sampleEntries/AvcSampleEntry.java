@@ -1,5 +1,6 @@
 package main.boxes.sampleEntries;
 
+import main.boxes.codec.avc.AvcConfigurationBox;
 import main.videoprocessing.annotation.ArraySize;
 import main.videoprocessing.annotation.Box;
 import main.videoprocessing.annotation.Order;
@@ -12,8 +13,11 @@ import org.springframework.stereotype.Component;
 @Box(type = "avc1")
 public class AvcSampleEntry extends VisualSampleEntry {
 
+    @Order(1)
+    private AvcConfigurationBox avcConfigurationBox;
+
     @Override
     public String toString() {
-        return getClass()+": "+super.toString();
+        return getClass()+": "+avcConfigurationBox;
     }
 }

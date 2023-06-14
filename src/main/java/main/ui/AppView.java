@@ -21,7 +21,7 @@ public class AppView {
     }
 
     @PostConstruct
-    public void initializeView () throws URISyntaxException, IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException {
+    public void initializeView () throws URISyntaxException, IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, InstantiationException {
 
         EventQueue.invokeLater(() -> {
             JFrame frame = new JFrame();
