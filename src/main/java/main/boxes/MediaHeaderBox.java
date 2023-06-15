@@ -18,7 +18,7 @@ public class MediaHeaderBox extends FullBox {
     @VariableObjectSize
     private Number modificationTime;
     @Order(3)
-    private int timescale;
+    private int timeScale;
     @Order(4)
     @VariableObjectSize
     private Number duration;

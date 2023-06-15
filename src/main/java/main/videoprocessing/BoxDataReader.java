@@ -27,8 +27,8 @@ public class BoxDataReader implements ApplicationContextAware {
         this.fieldsOrderComparator = fieldsOrderComparator;
     }
 
-    public void readAllBoxes(FileInputStream fileInputStream) throws IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, InstantiationException {
-
+    public List<BasicBox> readAllBoxes(FileInputStream fileInputStream) throws IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, InstantiationException {
+        List<BasicBox> boxes = new ArrayList<>();
 
         while (fileInputStream.available() > 0){
             int availableBytes = fileInputStream.available();
@@ -36,7 +36,11 @@ public class BoxDataReader implements ApplicationContextAware {
 
             BasicBox box = readBox(fileInputStream, result.boxType, result.boxLength - BYTES_AMOUNT_BOX_TYPE_AND_SIZE);
             System.out.println(box);
+            if (box != null){
+                boxes.add(box);
+            }
         }
+        return boxes;
     }
 
     private Result readTypeAndSizeOfBox(FileInputStream fileInputStream) throws IOException {
