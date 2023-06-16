@@ -32,14 +32,19 @@ public class BoxDataReaderTest {
     private BoxDataReader boxDataReader;
 
     @Autowired
+    private BoxReader boxReader;
+
+    @Autowired
+    private ObjectFieldReader objectFieldReader;
+
+    @Autowired
     private ApplicationContext applicationContext;
 
     private static final String FILE_NAME = "/screen-capture.mp4";
 
     @Test
     public void testMe () throws URISyntaxException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException, NoSuchFieldException {
-        boxDataReader = new BoxDataReader(new FieldsOrderComparator());
-        boxDataReader.setApplicationContext(applicationContext);
+        boxDataReader = new BoxDataReader(boxReader, objectFieldReader);
         URI path = getClass().getResource(FILE_NAME).toURI();
         List<BasicBox> basicBoxes;
         try (FileInputStream fileInputStream = new FileInputStream(Path.of(path).toFile())) {

@@ -21,7 +21,7 @@ public class FileReader {
         this.boxDataReader = boxDataReader;
     }
 
-    public void readFile() throws URISyntaxException, IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, InstantiationException {
+    public void readFile() throws URISyntaxException, IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, InstantiationException, NoSuchFieldException {
         URI path = getClass().getResource(FILE_NAME).toURI();
         FileInputStream fileInputStream = new FileInputStream(Path.of(path).toFile());
 
