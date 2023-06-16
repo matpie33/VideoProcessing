@@ -1,6 +1,7 @@
 package main.boxes;
 
-import main.videoprocessing.annotation.Text;
+import main.videoprocessing.annotation.DoNotPrint;
+import main.videoprocessing.annotation.PrintAsString;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -14,6 +15,9 @@ public abstract class Printable {
         return addClassNameOptionally() + Arrays.stream(getClass().getDeclaredFields()).map(field->{
             Object o;
             String toStringValue = "";
+            if (field.getDeclaredAnnotation(DoNotPrint.class) != null){
+                return "[not displayed]";
+            }
             try {
                 field.setAccessible(true);
                 o = field.get(this);
@@ -22,7 +26,7 @@ public abstract class Printable {
                 }
                 if (field.getType().isArray()){
                     if (field.getType().getComponentType().isPrimitive()){
-                        if (field.getDeclaredAnnotation(Text.class)!=null){
+                        if (field.getDeclaredAnnotation(PrintAsString.class)!=null){
                             return formatResult(field, new String((byte[])o));
                         }
                         String primitiveType = field.getType().getComponentType().getName();

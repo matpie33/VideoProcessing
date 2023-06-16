@@ -8,7 +8,7 @@ public class MetadataItem extends Printable{
 
     @Order(2)
     @ArraySize(4)
-    @Text
+    @PrintAsString
     private byte[] name;
 
     @Order(3)

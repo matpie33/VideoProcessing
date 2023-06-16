@@ -4,8 +4,6 @@ import main.videoprocessing.annotation.*;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-
 @Component()
 @Scope("prototype")
 @Box(type="hdlr")
@@ -19,7 +17,7 @@ public class HandlerBox extends FullBox {
     @ArraySize(3)
     private int[] reserved;
     @Order(4)
-    @Text
+    @PrintAsString
     private byte[] name;
 
 }

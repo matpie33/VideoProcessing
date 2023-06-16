@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class ColourInformationBox extends BasicBox {
     @Order(1)
     @ArraySize(4)
-    @Text
+    @PrintAsString
     private byte[] colourType;
 
     @Conditional
