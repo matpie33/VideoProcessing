@@ -17,9 +17,8 @@ public class ObjectFieldReader implements FieldReader {
     private final FieldsHandler fieldsHandler;
 
 
-    public ObjectFieldReader(FieldsHandler fieldsHandler, FieldReaderQueue fieldReaderQueue) {
+    public ObjectFieldReader(FieldsHandler fieldsHandler) {
         this.fieldsHandler = fieldsHandler;
-        fieldReaderQueue.addReader(this);
     }
 
 

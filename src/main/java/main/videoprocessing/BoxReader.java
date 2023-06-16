@@ -24,17 +24,11 @@ public class BoxReader implements ApplicationContextAware, FieldReader{
 
     private final FieldsHandler fieldsHandler;
 
-    private final FieldReaderQueue fieldReaderQueue;
 
-    public BoxReader(FieldsHandler fieldsHandler, FieldReaderQueue fieldReaderQueue) {
+    public BoxReader(FieldsHandler fieldsHandler) {
         this.fieldsHandler = fieldsHandler;
-        this.fieldReaderQueue = fieldReaderQueue;
     }
 
-    @PostConstruct
-    public void init (){
-        fieldReaderQueue.addReader(this);
-    }
 
     public BasicBox readBox(FileInputStream fileInputStream) throws IOException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, InstantiationException, NoSuchFieldException {
         Result result = readTypeAndSizeOfBox(fileInputStream);

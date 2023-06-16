@@ -1,6 +1,5 @@
 package main.ui;
 
-import main.videoprocessing.BoxDataReader;
 import main.videoprocessing.FileReader;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +15,10 @@ public class AppView {
 
     private final FileReader fileReader;
 
-    public AppView(FileReader fileReader, BoxDataReader boxDataReader) {
+    private static final String FILE_NAME = "/screen-capture.mp4";
+
+
+    public AppView(FileReader fileReader) {
         this.fileReader = fileReader;
     }
 
@@ -31,7 +33,7 @@ public class AppView {
             videoView.repaint();
             frame.setContentPane(videoView);
         });
-        fileReader.readFile();
+        fileReader.readFile(getClass().getResource(FILE_NAME).toURI());
 
 
     }

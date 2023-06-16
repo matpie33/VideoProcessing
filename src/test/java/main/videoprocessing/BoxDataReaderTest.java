@@ -22,34 +22,34 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @ExtendWith(SpringExtension.class)
-@Import(value={BoxDataReader.class})
+@Import(value={FileReader.class})
 @ContextConfiguration(classes={TestConfiguration.class})
 public class BoxDataReaderTest {
 
-    @Autowired
-    private BoxDataReader boxDataReader;
 
     @Autowired
     private BoxReader boxReader;
 
     @Autowired
-    private ObjectFieldReader objectFieldReader;
+    private Set<FieldReader> fieldReaderSet;
 
     @Autowired
-    private ApplicationContext applicationContext;
+    private FieldReaderQueue fieldReaderQueue;
+
+    @Autowired
+    private FileReader fileReader;
 
     private static final String FILE_NAME = "/screen-capture.mp4";
 
     @Test
     public void testMe () throws URISyntaxException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException, NoSuchFieldException {
-        boxDataReader = new BoxDataReader(boxReader, objectFieldReader);
+        fileReader = new FileReader(fieldReaderSet, fieldReaderQueue, boxReader);
         URI path = getClass().getResource(FILE_NAME).toURI();
         List<BasicBox> basicBoxes;
-        try (FileInputStream fileInputStream = new FileInputStream(Path.of(path).toFile())) {
-            basicBoxes = boxDataReader.readAllBoxes(fileInputStream);
-        }
+        basicBoxes = fileReader.readFile(path);
         for (BasicBox basicBox : basicBoxes) {
             if (basicBox instanceof MovieBox){
                 Object movieHeaderBox = findField(basicBox, "movieHeaderBox");
