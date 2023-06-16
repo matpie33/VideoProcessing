@@ -2,23 +2,23 @@ package main.videoprocessing;
 
 
 import main.boxes.*;
+import main.videoprocessing.fieldreaders.BoxReader;
+import main.videoprocessing.fieldreaders.FieldReader;
+import main.videoprocessing.fieldreaders.FieldReaderQueue;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +46,7 @@ public class BoxDataReaderTest {
 
     @Test
     public void testMe () throws URISyntaxException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException, NoSuchFieldException {
-        fileReader = new FileReader(fieldReaderSet, fieldReaderQueue, boxReader);
+        fileReader = new FileReader(fieldReaderSet,  fieldReaderQueue, boxReader);
         URI path = getClass().getResource(FILE_NAME).toURI();
         List<BasicBox> basicBoxes;
         basicBoxes = fileReader.readFile(path);

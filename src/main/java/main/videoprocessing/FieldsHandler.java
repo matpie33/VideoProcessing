@@ -32,19 +32,21 @@ public class FieldsHandler {
         this.fieldsOrderComparator = fieldsOrderComparator;
     }
 
-    public void fillFields(FileInputStream fileInputStream, int availableBytes, Object objectInstance, SortedSet<Field> sortedFields) throws IllegalAccessException, InvocationTargetException, IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException, NoSuchFieldException {
+    public int fillFields(FileInputStream fileInputStream, int availableBytes, Object objectInstance, SortedSet<Field> sortedFields) throws IllegalAccessException, InvocationTargetException, IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException, NoSuchFieldException {
+        int availableBytesStart = availableBytes;
         for (Field field : sortedFields) {
             Class<?> fieldType = field.getType();
             if (field.getDeclaredAnnotation(Skip.class)!=null || !isFieldAvailable(objectInstance, field)) {
                 continue;
             }
             if (fieldType.isArray() ){
-                availableBytes = arrayFieldHandler.handleArrayField(fileInputStream, availableBytes, objectInstance, field, fieldType);
+                availableBytes = arrayFieldHandler.handleArrayField(fileInputStream, availableBytes, objectInstance, field);
             }
             else {
                 availableBytes = nonArrayFieldsHandler.handleNonArrayField(fileInputStream, availableBytes, objectInstance, field, fieldType);
             }
         }
+        return availableBytesStart - availableBytes;
     }
 
     private boolean isFieldAvailable(Object objectInstance, Field field) throws IllegalAccessException, InvocationTargetException {

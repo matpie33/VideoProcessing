@@ -1,6 +1,10 @@
 package main.videoprocessing;
 
 import main.boxes.BasicBox;
+import main.videoprocessing.fieldreaders.BoxReader;
+import main.videoprocessing.fieldreaders.FieldReader;
+import main.videoprocessing.fieldreaders.FieldReaderQueue;
+import main.videoprocessing.fieldreaders.ObjectFieldReader;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -8,7 +12,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,15 @@ public class FileReader {
 
     @PostConstruct
     public void init (){
-        fieldReaders.forEach(fieldReaderQueue::addReader);
+        fieldReaders.forEach(fieldReader -> {
+            if (fieldReader instanceof ObjectFieldReader){
+                fieldReaderQueue.setElseReader(fieldReader);
+            }
+            else{
+                fieldReaderQueue.addReader(fieldReader);
+
+            }
+        });
     }
 
     public FileReader(Set<FieldReader> fieldReaders, FieldReaderQueue fieldReaderQueue, BoxReader boxReader) {

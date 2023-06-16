@@ -1,13 +1,15 @@
-package main.videoprocessing;
+package main.videoprocessing.fieldreaders;
 
 import main.boxes.BasicBox;
+import main.videoprocessing.FieldReadResult;
+import main.videoprocessing.FieldsHandler;
+import main.videoprocessing.Result;
 import main.videoprocessing.annotation.Box;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -17,7 +19,7 @@ import java.util.Map;
 import java.util.SortedSet;
 
 @Component
-public class BoxReader implements ApplicationContextAware, FieldReader{
+public class BoxReader implements ApplicationContextAware, FieldReader {
 
     private ApplicationContext applicationContext;
     private static final int BYTES_AMOUNT_BOX_TYPE_AND_SIZE = 8;
@@ -83,12 +85,14 @@ public class BoxReader implements ApplicationContextAware, FieldReader{
     }
 
     @Override
-    public Object readField(FileInputStream fileInputStream, int availableBytes, Field field) throws IOException, NoSuchFieldException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
-        return readBox(fileInputStream);
+    public FieldReadResult readField(FileInputStream fileInputStream, int availableBytes, Field field, Object objectInstance) throws IOException, NoSuchFieldException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
+        BasicBox basicBox = readBox(fileInputStream);
+        return new FieldReadResult(basicBox.getBoxLength(), basicBox);
     }
 
     @Override
-    public boolean isApplicable(Class<?> classType) {
+    public boolean isApplicable(Field field) {
+        Class<?> classType = field.getType();
         return classType.isArray()? BasicBox.class.isAssignableFrom(classType.getComponentType()) : BasicBox.class
                 .isAssignableFrom(classType);
     }
