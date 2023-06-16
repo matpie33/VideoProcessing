@@ -44,12 +44,6 @@ public class ObjectFieldReader implements FieldReader {
 
     @Override
     public boolean isApplicable(Field field) {
-        Class<?> classType = field.getType();
-        Set<Class<?>> excludedClasses = new HashSet<>();
-        excludedClasses.add(String.class);
-        excludedClasses.add(BasicBox.class);
-        excludedClasses.add(Number.class);
-        return classType.isArray()? !excludedClasses.contains(classType.getComponentType()):
-                !excludedClasses.contains(classType) ;
+        throw new UnsupportedOperationException("This is else reader");
     }
 }
