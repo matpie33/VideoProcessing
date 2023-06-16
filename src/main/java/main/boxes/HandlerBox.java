@@ -17,7 +17,7 @@ public class HandlerBox extends FullBox {
     private String handlerType;
     @Order(3)
     @ArraySize(3)
-    private final int[] reserved = {0, 0, 0};
+    private int[] reserved;
     @Order(4)
     @Text
     private byte[] name;
