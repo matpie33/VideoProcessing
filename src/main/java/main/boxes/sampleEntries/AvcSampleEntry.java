@@ -1,5 +1,8 @@
 package main.boxes.sampleEntries;
 
+import main.boxes.BitRateBox;
+import main.boxes.ColourInformationBox;
+import main.boxes.PixelAspectRatioBox;
 import main.boxes.codec.avc.AvcConfigurationBox;
 import main.videoprocessing.annotation.ArraySize;
 import main.videoprocessing.annotation.Box;
@@ -15,5 +18,15 @@ public class AvcSampleEntry extends VisualSampleEntry {
 
     @Order(1)
     private AvcConfigurationBox avcConfigurationBox;
+
+
+    @Order(2)
+    private ColourInformationBox colourInformationBox;
+
+    @Order(3)
+    private PixelAspectRatioBox pixelAspectRatioBox;
+
+    @Order(4)
+    private BitRateBox bitRateBox;
 
 }
