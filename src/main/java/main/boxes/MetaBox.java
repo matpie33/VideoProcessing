@@ -8,10 +8,8 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Box(type="meta")
 public class MetaBox extends FullBox {
-    @Order(1)
     private HandlerBox handlerBox;
 
-    @Order(2)
     private MetaDataItemListBox metaDataItemListBox;
 
 }

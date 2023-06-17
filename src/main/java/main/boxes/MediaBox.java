@@ -9,13 +9,10 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Box(type="mdia")
 public class MediaBox extends BasicBox {
-    @Order(1)
+
+    private HandlerBox handlerBox;
     private MediaHeaderBox mediaHeaderBox;
 
-    @Order(2)
-    private HandlerBox handlerBox;
-
-    @Order(3)
     private MediaInformationBox mediaInformationBox;
 
 

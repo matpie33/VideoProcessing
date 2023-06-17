@@ -16,17 +16,12 @@ import org.springframework.stereotype.Component;
 @Box(type = "avc1")
 public class AvcSampleEntry extends VisualSampleEntry {
 
-    @Order(1)
     private AvcConfigurationBox avcConfigurationBox;
 
-
-    @Order(2)
     private ColourInformationBox colourInformationBox;
 
-    @Order(3)
     private PixelAspectRatioBox pixelAspectRatioBox;
 
-    @Order(4)
     private BitRateBox bitRateBox;
 
 }

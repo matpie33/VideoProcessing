@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Box(type="dinf")
 public class DataInformationBox extends BasicBox {
-    @Order(1)
     private DataReferenceBox dataReferenceBox;
 
 

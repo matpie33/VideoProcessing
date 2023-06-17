@@ -9,6 +9,5 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Box(type="ilst")
 public class MetaDataItemListBox extends BasicBox {
-    @Order(1)
     private MetadataItem metadataItem;
 }

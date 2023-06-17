@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Box(type="moov")
 public class MovieBox extends BasicBox {
-    @Order(1)
     private MovieHeaderBox movieHeaderBox;
 
 }

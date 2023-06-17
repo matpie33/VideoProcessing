@@ -29,6 +29,7 @@ public class FieldsOrderComparator implements Comparator<Field> {
     }
 
     private static int getOrder(Field o1) {
-        return o1.getDeclaredAnnotation(Order.class).value();
+        Order order = o1.getDeclaredAnnotation(Order.class);
+        return order ==null? o1.hashCode(): order.value();
     }
 }

@@ -8,12 +8,9 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Box(type="trak")
 public class TrackBox extends BasicBox {
-    @Order(1)
     private TrackHeaderBox trackHeaderBox;
     @OptionalField
-    @Order(2)
     private EditBox editBox;
-    @Order(3)
     private MediaBox mediaBox;
 
 }

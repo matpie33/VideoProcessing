@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Box(type="edts")
 public class EditBox extends BasicBox {
-    @Order(1)
     private EditListBox editListBox;
 
 }

@@ -43,7 +43,7 @@ public class FieldsHandler {
                 availableBytes = arrayFieldHandler.handleArrayField(fileInputStream, availableBytes, objectInstance, field);
             }
             else {
-                availableBytes = nonArrayFieldsHandler.handleNonArrayField(fileInputStream, availableBytes, objectInstance, field, fieldType);
+                availableBytes = nonArrayFieldsHandler.handleNonArrayField(fileInputStream, availableBytes, objectInstance, field);
             }
         }
         return availableBytesStart - availableBytes;

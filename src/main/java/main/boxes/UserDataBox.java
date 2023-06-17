@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Box(type="udta")
 public class UserDataBox extends BasicBox {
-    @Order(1)
     private MetaBox metaBox;
 
 }
