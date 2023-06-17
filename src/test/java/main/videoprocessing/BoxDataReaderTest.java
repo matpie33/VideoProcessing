@@ -45,7 +45,7 @@ public class BoxDataReaderTest {
     private static final String FILE_NAME = "/screen-capture.mp4";
 
     @Test
-    public void testMe () throws URISyntaxException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException, NoSuchFieldException {
+    public void integrationTest () throws URISyntaxException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException, NoSuchFieldException {
         fileReader = new FileReader(fieldReaderSet,  fieldReaderQueue, boxReader);
         URI path = getClass().getResource(FILE_NAME).toURI();
         List<BasicBox> basicBoxes;

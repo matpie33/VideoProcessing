@@ -1,18 +1,20 @@
 package main.boxes;
 
+import main.videoprocessing.FieldsOrderComparator;
 import main.videoprocessing.annotation.DoNotPrint;
 import main.videoprocessing.annotation.PrintAsString;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public abstract class Printable {
 
     @Override
     public String toString() {
-        return addClassNameOptionally() + Arrays.stream(getClass().getDeclaredFields()).map(field->{
+        return addClassNameOptionally() + getDeclaredFields().map(field->{
             Object o;
             String toStringValue = "";
             if (field.getDeclaredAnnotation(DoNotPrint.class) != null){
@@ -59,6 +61,17 @@ public abstract class Printable {
             return formatResult(field, toStringValue);
         }).collect(Collectors.joining(", "));
     }
+
+    private Stream<Field> getDeclaredFields() {
+        Set<Field> declaredFields = new TreeSet<>(new FieldsOrderComparator());
+        Class parent = getClass();
+        while (!parent.equals(Object.class)){
+            Collections.addAll(declaredFields, parent.getDeclaredFields());
+            parent = parent.getSuperclass();
+        }
+        return declaredFields.stream();
+    }
+
 
     private String addClassNameOptionally() {
         return Modifier.isStatic(getClass().getModifiers()) ? "" : getClass().getSimpleName() + ": ";
