@@ -24,4 +24,19 @@ public class AvcSampleEntry extends VisualSampleEntry {
 
     private BitRateBox bitRateBox;
 
+    public AvcConfigurationBox getAvcConfigurationBox() {
+        return avcConfigurationBox;
+    }
+
+    public ColourInformationBox getColourInformationBox() {
+        return colourInformationBox;
+    }
+
+    public PixelAspectRatioBox getPixelAspectRatioBox() {
+        return pixelAspectRatioBox;
+    }
+
+    public BitRateBox getBitRateBox() {
+        return bitRateBox;
+    }
 }

@@ -1,5 +1,7 @@
 package main.ui;
 
+import main.boxes.BasicBox;
+import main.videodecoding.VideoDecoder;
 import main.videoprocessing.FileReader;
 import org.springframework.stereotype.Component;
 
@@ -9,17 +11,21 @@ import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @Component
 public class AppView {
 
     private final FileReader fileReader;
 
+    private final VideoDecoder videoDecoder;
+
     private static final String FILE_NAME = "/screen-capture.mp4";
 
 
-    public AppView(FileReader fileReader) {
+    public AppView(FileReader fileReader, VideoDecoder videoDecoder) {
         this.fileReader = fileReader;
+        this.videoDecoder = videoDecoder;
     }
 
     @PostConstruct
@@ -33,7 +39,8 @@ public class AppView {
             videoView.repaint();
             frame.setContentPane(videoView);
         });
-        fileReader.readFile(getClass().getResource(FILE_NAME).toURI());
+        List<BasicBox> boxes = fileReader.readFile(getClass().getResource(FILE_NAME).toURI());
+        videoDecoder.decode(boxes);
 
 
     }

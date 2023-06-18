@@ -15,4 +15,15 @@ public class MediaInformationBox extends BasicBox {
 
     private SampleTableBox sampleTableBox;
 
+    public VideoMediaHeaderBox getVideoMediaHeaderBox() {
+        return videoMediaHeaderBox;
+    }
+
+    public DataInformationBox getDataInformationBox() {
+        return dataInformationBox;
+    }
+
+    public SampleTableBox getSampleTableBox() {
+        return sampleTableBox;
+    }
 }

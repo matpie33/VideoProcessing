@@ -144,4 +144,43 @@ public class AvcConfigurationBox extends BasicBox {
 
     }
 
+    public byte getConfigurationVersion() {
+        return configurationVersion;
+    }
+
+    public byte getAvcProfileIndication() {
+        return avcProfileIndication;
+    }
+
+    public byte getProfileCompatibility() {
+        return profileCompatibility;
+    }
+
+    public byte getAvcLevelIndication() {
+        return avcLevelIndication;
+    }
+
+    public byte getReservedAndLengthMinusOne() {
+        return reservedAndLengthMinusOne;
+    }
+
+    public byte getReservedAndNumOfSequenceParameterSets() {
+        return reservedAndNumOfSequenceParameterSets;
+    }
+
+    public SequenceParameter[] getSequenceParameters() {
+        return sequenceParameters;
+    }
+
+    public byte getNumOfPictureParameterSets() {
+        return numOfPictureParameterSets;
+    }
+
+    public PictureParameter[] getPictureParameters() {
+        return pictureParameters;
+    }
+
+    public ChromaParameters getChromaParameters() {
+        return chromaParameters;
+    }
 }

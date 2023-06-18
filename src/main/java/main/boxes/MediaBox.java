@@ -15,5 +15,15 @@ public class MediaBox extends BasicBox {
 
     private MediaInformationBox mediaInformationBox;
 
+    public HandlerBox getHandlerBox() {
+        return handlerBox;
+    }
 
+    public MediaHeaderBox getMediaHeaderBox() {
+        return mediaHeaderBox;
+    }
+
+    public MediaInformationBox getMediaInformationBox() {
+        return mediaInformationBox;
+    }
 }

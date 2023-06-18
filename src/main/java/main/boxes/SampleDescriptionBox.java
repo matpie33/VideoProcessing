@@ -25,4 +25,11 @@ public class SampleDescriptionBox extends FullBox {
         return entryCount;
     }
 
+    public int getEntryCount() {
+        return entryCount;
+    }
+
+    public SampleEntry[] getSampleEntries() {
+        return sampleEntries;
+    }
 }

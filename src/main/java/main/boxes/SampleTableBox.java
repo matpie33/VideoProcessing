@@ -22,4 +22,32 @@ public class SampleTableBox extends BasicBox{
     private SampleSizeBox sampleSizeBox;
 
     private ChunkOffsetBox chunkOffsetBox;
+
+    public SampleDescriptionBox getSampleDescriptionBox() {
+        return sampleDescriptionBox;
+    }
+
+    public TimeToSampleBox getTimeToSampleBox() {
+        return timeToSampleBox;
+    }
+
+    public SyncSampleBox getSyncSampleBox() {
+        return syncSampleBox;
+    }
+
+    public CompositionOffsetBox getCompositionOffsetBox() {
+        return compositionOffsetBox;
+    }
+
+    public SampleToChunkBox getSampleToChunkBox() {
+        return sampleToChunkBox;
+    }
+
+    public SampleSizeBox getSampleSizeBox() {
+        return sampleSizeBox;
+    }
+
+    public ChunkOffsetBox getChunkOffsetBox() {
+        return chunkOffsetBox;
+    }
 }

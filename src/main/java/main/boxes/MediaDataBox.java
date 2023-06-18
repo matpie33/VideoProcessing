@@ -14,4 +14,8 @@ public class MediaDataBox extends BasicBox {
     @Order(1)
     @DoNotPrint
     private byte [] data;
+
+    public byte[] getData() {
+        return data;
+    }
 }

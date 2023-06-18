@@ -26,6 +26,15 @@ public class SampleSizeBox extends FullBox {
         return sampleCount;
     }
 
+    public int getSampleSize() {
+        return sampleSize;
+    }
 
+    public int getSampleCount() {
+        return sampleCount;
+    }
 
+    public int[] getSampleEntrySizes() {
+        return sampleEntrySizes;
+    }
 }

@@ -13,4 +13,15 @@ public class TrackBox extends BasicBox {
     private EditBox editBox;
     private MediaBox mediaBox;
 
+    public TrackHeaderBox getTrackHeaderBox() {
+        return trackHeaderBox;
+    }
+
+    public EditBox getEditBox() {
+        return editBox;
+    }
+
+    public MediaBox getMediaBox() {
+        return mediaBox;
+    }
 }
