@@ -16,6 +16,12 @@ public class NALUnitExtractor {
 
     public static final int TWO_BITS_MASK = 0b00000011;
 
+    private NALProcessor nalProcessor;
+
+    public NALUnitExtractor(NALProcessor nalProcessor) {
+        this.nalProcessor = nalProcessor;
+    }
+
     public List<byte []> extractNALUnits (MediaDataBox mediaData, AvcConfigurationBox avcConfigurationBox, SampleSizeBox sampleSizeBox){
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(mediaData.getData());
         byte reservedAndLengthMinusOne = avcConfigurationBox.getReservedAndLengthMinusOne();
@@ -29,6 +35,7 @@ public class NALUnitExtractor {
                 int readedAmount = readBytesIntoArray(byteArrayInputStream, nalUnitLength);
                 byte [] nalUnit = new byte [getValueFromBytes(nalUnitLength)];
                 readedAmount = readBytesIntoArray(byteArrayInputStream, nalUnit);
+                nalProcessor.processNal(nalUnit);
                 nalUnits.add(nalUnit);
                 byteIndexInsideSample += nalUnitLength.length + nalUnit.length;
             }
