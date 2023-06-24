@@ -9,6 +9,16 @@ public class NALProcessor {
 
     public static final int UUID_ISO_IEC_LENGTH = 16;
 
+    private final LeadingZerosCounter leadingZerosCounter;
+
+    private  BitReader bitReader;
+
+    public NALProcessor(LeadingZerosCounter leadingZerosCounter, BitReader bitReader) {
+        this.leadingZerosCounter = leadingZerosCounter;
+        this.bitReader = bitReader;
+    }
+
+
     public void processNal (byte [] nalUnit){
         byte header = nalUnit[0];
         if (getForbiddenZeroBit(header)!=0){
@@ -25,8 +35,22 @@ public class NALProcessor {
             case SEI:
                 handleSEIMessage(nalUnit);
                 break;
+            case CODED_SLICE_OF_IDR_PICTURE:
+                handleCodedSlice(nalUnit);
+                break;
         }
     }
+
+    private void handleCodedSlice(byte[] nalUnit) {
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(nalUnit);
+        LeadingZerosCheckResultDTO leadingZeroBits = leadingZerosCounter.countLeadingBits(byteArrayInputStream);
+        long codeNum= 2^leadingZeroBits.getLeadingZeroBits() -1 + bitReader.readNextNBits( byteArrayInputStream, leadingZeroBits.getLeadingZeroBits());
+    }
+
+
+
+
+
 
     private void handleSEIMessage(byte[] nalUnit) {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(nalUnit);
