@@ -9,13 +9,10 @@ public class NALProcessor {
 
     public static final int UUID_ISO_IEC_LENGTH = 16;
 
-    private final LeadingZerosCounter leadingZerosCounter;
+    private final ExpGolombParser expGolombParser;
 
-    private  BitReader bitReader;
-
-    public NALProcessor(LeadingZerosCounter leadingZerosCounter, BitReader bitReader) {
-        this.leadingZerosCounter = leadingZerosCounter;
-        this.bitReader = bitReader;
+    public NALProcessor(ExpGolombParser expGolombParser) {
+        this.expGolombParser = expGolombParser;
     }
 
 
@@ -42,15 +39,8 @@ public class NALProcessor {
     }
 
     private void handleCodedSlice(byte[] nalUnit) {
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(nalUnit);
-        LeadingZerosCheckResultDTO leadingZeroBits = leadingZerosCounter.countLeadingBits(byteArrayInputStream);
-        long codeNum= 2^leadingZeroBits.getLeadingZeroBits() -1 + bitReader.readNextNBits( byteArrayInputStream, leadingZeroBits.getLeadingZeroBits());
+        expGolombParser.parseExpGolomb(new ByteArrayInputStream(nalUnit));
     }
-
-
-
-
-
 
     private void handleSEIMessage(byte[] nalUnit) {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(nalUnit);

@@ -44,4 +44,15 @@ public class BitReaderTest {
 
     }
 
+    @Test
+    public void testReadingFullByteAndSomeMoreBits (){
+        byte[] b = {  (byte) 0b10110111, (byte) 0b11000100, (byte) 0b10100111};
+        ByteArrayInputStream input = new ByteArrayInputStream(b);
+        long result = bitReader.readNextNBits(input, 6);
+        Assertions.assertThat(result).isEqualTo(0b00101101);
+        long result2 = bitReader.readNextNBits(input, 12);
+        Assertions.assertThat(result2).isEqualTo(0b000000111100010010);
+
+    }
+
 }
