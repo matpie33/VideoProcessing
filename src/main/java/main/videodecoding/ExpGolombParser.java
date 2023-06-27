@@ -28,7 +28,7 @@ public class ExpGolombParser {
 
     public long parseExpGolomb (ByteArrayInputStream inputStream){
         int leadingZeroBits = countLeadingBits(inputStream);
-        return 2^leadingZeroBits -1 + bitReader.readNextNBits( inputStream, leadingZeroBits);
+        return (long)Math.pow(2, leadingZeroBits) -1 + bitReader.readNextNBits( inputStream, leadingZeroBits);
     }
 
 }

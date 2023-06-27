@@ -18,6 +18,9 @@ public class BitReader {
         if (numberOfBitsToRead > INT_SIZE){
             throw new UnsupportedOperationException("only supporting reading up to 32 bits at a time");
         }
+        if (numberOfBitsToRead ==0){
+            return 0;
+        }
         int result;
         int totalBitsReaded;
         checkInitialize(inputStream);

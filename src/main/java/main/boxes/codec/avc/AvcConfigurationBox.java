@@ -106,7 +106,7 @@ public class AvcConfigurationBox extends BasicBox {
     }
 
 
-    private static class SequenceParameter extends Printable{
+    public static class SequenceParameter extends Printable{
         @Order(1)
         private short sequenceParameterSetLength;
         @VariableArraySize
@@ -123,6 +123,13 @@ public class AvcConfigurationBox extends BasicBox {
             }
         }
 
+        public short getSequenceParameterSetLength() {
+            return sequenceParameterSetLength;
+        }
+
+        public byte[] getSequenceParameterSetNALUnit() {
+            return sequenceParameterSetNALUnit;
+        }
     }
 
     private static class PictureParameter extends Printable {

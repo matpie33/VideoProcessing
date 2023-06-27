@@ -22,12 +22,13 @@ public class NALUnitExtractor {
         this.nalProcessor = nalProcessor;
     }
 
-    public List<byte []> extractNALUnits (MediaDataBox mediaData, AvcConfigurationBox avcConfigurationBox, SampleSizeBox sampleSizeBox){
+    public List<byte []> extractNALUnits (MediaDataBox mediaData, AvcConfigurationBox avcConfigurationBox, SampleSizeBox sampleSizeBox) {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(mediaData.getData());
         byte reservedAndLengthMinusOne = avcConfigurationBox.getReservedAndLengthMinusOne();
         int lengthMinus1 = reservedAndLengthMinusOne & TWO_BITS_MASK;
         List<byte []> nalUnits = new ArrayList<>();
         int pictureLength;
+        nalProcessor.processNal(avcConfigurationBox.getSequenceParameters()[0].getSequenceParameterSetNALUnit());
         byte [] nalUnitLength = new byte [lengthMinus1 + 1];
         for (int sampleIndex=0; sampleIndex< sampleSizeBox.getSampleCount(); sampleIndex++){
             pictureLength = sampleSizeBox.getSampleEntrySizes()[sampleIndex];

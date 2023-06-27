@@ -3,7 +3,7 @@ package main.videodecoding;
 import java.util.Arrays;
 
 public enum NALUnitType {
-    SEI(6), CODED_SLICE_OF_IDR_PICTURE(5);
+    SEI(6), CODED_SLICE_OF_IDR_PICTURE(5), SEQUENCE_PARAMETER_SET(7);
 
     private int value;
 

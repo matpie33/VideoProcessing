@@ -20,7 +20,7 @@ public class VideoDecoder {
         this.nalUnitExtractor = nalUnitExtractor;
     }
 
-    public void decode (Collection<BasicBox> boxes){
+    public void decode (Collection<BasicBox> boxes) {
         MediaDataBox mediaDataBox = boxExtractor.extractMediaData(boxes);
         AvcConfigurationBox avcConfigurationBox = boxExtractor.extractAvcConfigurationBox(boxes);
         SampleSizeBox sampleSizeBox = boxExtractor.extractSampleSizeBox(boxes);
